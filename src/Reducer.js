@@ -18,13 +18,6 @@ export default (state, { type, payload }) => {
       };
     }
 
-    case Constants.SET_DRAFT_AP: {
-      return {
-        ...state,
-        draftAP: payload,
-      };
-    }
-
     case Constants.ADD_FCE: {
       return {
         ...state,

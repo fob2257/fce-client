@@ -8,7 +8,6 @@ const initialState = (localStorage.getItem(contextLocalStorage)) ? JSON.parse(lo
   : ({
     isAuth: false,
     currentUser: null,
-    draftAP: null,
     fces: [],
     currentFce: null,
   });

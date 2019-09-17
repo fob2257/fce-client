@@ -20,9 +20,6 @@ const HomePage = () => {
               <Link to='/form' className='btn btn-lg btn-info mr-2'>
                 Submit Form
               </Link>
-              <Link to='/details' className='btn btn-lg btn-light'>
-                Details
-              </Link>
             </div>
           </div>
         </div>
