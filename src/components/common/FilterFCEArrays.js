@@ -1,3 +1,5 @@
+import { v4 } from 'uuid';
+
 const filterReference = (data = []) =>
   data.filter(d => d.reference
     && d.reference.length >= 13
@@ -9,10 +11,13 @@ const checkReference = (reference = '', ptovta = '', nrocmp = '') => {
     const refLength = reference.length;
     const sliceNum = refLength >= 14 ? 6 : 5;
 
+    const refFirstPart = Number.parseInt(reference.slice(sliceNum - `${ptovta}`.length).substring(0, `${ptovta}`.length));
+    const refSecondPart = Number.parseInt(reference.slice(sliceNum));
+
     const result = ptovta
       && nrocmp
-      && Number.parseInt(reference.slice(sliceNum - ptovta.length).substring(0, ptovta.length)) === Number.parseInt(ptovta)
-      && Number.parseInt(reference.slice(sliceNum)) === Number.parseInt(nrocmp);
+      && refFirstPart === Number.parseInt(ptovta)
+      && refSecondPart === Number.parseInt(nrocmp);
 
     return result;
   } catch (error) {
@@ -45,5 +50,6 @@ export default (fceData = [], invoiceData = [], vimData = [], paidData = []) =>
       vims,
       paids,
       createdAt: new Date(),
+      id: v4(),
     });
   });

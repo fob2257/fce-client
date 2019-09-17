@@ -9,7 +9,7 @@ import InputGroup from './common/InputGroup';
 import Spinner from './Spinner';
 
 const FormDocs = () => {
-  const { state, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
 
   const [fceFile, setFceFile] = useState(null);
   const [invoiceFile, setInvoiceFile] = useState(null);
@@ -29,11 +29,16 @@ const FormDocs = () => {
     fn(null);
   };
 
-  const clearForm = (fns = []) => {
+  const clearForm = () => {
     const formElement = document.getElementById('submitFormId');
     formElement.reset();
 
-    fns.map(fn => clearInput(fn)());
+    [
+      setFceFile,
+      setInvoiceFile,
+      setVimFile,
+      setPaidFile,
+    ].map(fn => fn(null));
   }
 
   const promiseOrEmptyArray = data => (data) ? workBookReader(data.file, docs[data.name]) : [];
@@ -58,12 +63,7 @@ const FormDocs = () => {
 
       dispatch({ type: constants.ADD_FCE, payload: res });
 
-      clearForm([
-        setFceFile,
-        setInvoiceFile,
-        setVimFile,
-        setPaidFile,
-      ]);
+      clearForm();
     } catch (error) {
       console.error(error);
     }
@@ -170,14 +170,28 @@ const FormDocs = () => {
                     />
                   </div>
                 </div>
-                <div className='mx-5'>
-                  <button
-                    type='submit'
-                    className='btn btn-primary btn-lg btn-block'
-                    disabled={fceFile === null}
-                  >
-                    Submit
-                  </button>
+                <div className='row mb-4'>
+                  <div className='col mx-5'>
+                    <button
+                      type='submit'
+                      className={`btn btn-lg btn-block ${(fceFile === null) ? 'btn-secondary' : 'btn-primary'}`}
+                      disabled={fceFile === null}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                  <div className='col mx-5'>
+                    <button
+                      type='button'
+                      className='btn btn-danger btn-lg btn-block'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        clearForm();
+                      }}
+                    >
+                      Clear All
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>

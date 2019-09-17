@@ -23,7 +23,7 @@ export default (state, { type, payload }) => {
         ...state,
         fces: [
           ...state.fces,
-          payload,
+          ...payload,
         ],
       };
     }
