@@ -14,6 +14,7 @@ import NotFound from './components/NotFound';
 
 import HomePage from './pages/HomePage';
 import FormPage from './pages/FormPage';
+import DetailsPage from './pages/DetailsPage';
 
 const Root = () => {
   return (
@@ -25,8 +26,8 @@ const Root = () => {
             <Route exact path='/' component={HomePage} />
             <div className='container'>
               <Route path='/form' component={FormPage} />
-              {/* <Route path='/details' component={DetailsPage} />
-          <Route path='/details/:id' component={DetailsPage} /> */}
+              <Route path='/details' component={DetailsPage} />
+              {/* <Route path='/details/:id' component={DetailsPage} /> */}
               <Route path='/not-found' component={NotFound} />
               {/* <Redirect to='/not-found' /> */}
             </div>

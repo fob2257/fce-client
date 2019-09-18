@@ -1,13 +1,13 @@
 import React from 'react';
 
 import FormDocs from '../components/FormDocs';
-import FCEFeed from '../components/FCEFeed';
+import FCECardFeed from '../components/FCECardFeed';
 
 const FormPage = () => (
   <div className='form-page'>
     <FormDocs />
     <hr />
-    <FCEFeed />
+    <FCECardFeed />
   </div>
 );
 

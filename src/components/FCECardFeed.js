@@ -62,11 +62,11 @@ const FCECard = ({ data }) => {
   );
 };
 
-const FCEFeed = () => {
+const FCECardFeed = () => {
   const { state } = useContext(Context);
 
   return (
-    <div className='fce-feed'>
+    <div className='fce-card-feed'>
       <div className='card-deck mb-4'>
         {
           state.fces.slice(-4).reverse().map((fce, i) => (
@@ -78,4 +78,4 @@ const FCEFeed = () => {
   );
 };
 
-export default FCEFeed;
+export default FCECardFeed;
