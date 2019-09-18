@@ -59,7 +59,7 @@ const FormDocs = () => {
         promiseOrEmptyArray(paidFile),
       ]);
 
-      const res = filterFCEArrays(fceData, invoiceData, vimData, paidData);
+      const res = await filterFCEArrays(fceData, invoiceData, vimData, paidData);
 
       dispatch({ type: constants.ADD_FCE, payload: res });
 
@@ -102,7 +102,7 @@ const FormDocs = () => {
               <form id='submitFormId' onSubmit={onSubmitForm}>
                 <div className='form-row mb-4'>
                   <div className='col'>
-                    <label for='fce'>
+                    <label htmlFor='fce'>
                       Electronic Credit Invoice (FCE) File
                     </label>
                     <InputGroup
@@ -121,7 +121,7 @@ const FormDocs = () => {
                 <hr />
                 <div className='form-row mb-2'>
                   <div className='col'>
-                    <label for='invoice'>
+                    <label htmlFor='invoice'>
                       Invoice Capturing File
                     </label>
                     <InputGroup
@@ -138,7 +138,7 @@ const FormDocs = () => {
                 </div>
                 <div className='form-row mb-2'>
                   <div className='col'>
-                    <label for='vim'>
+                    <label htmlFor='vim'>
                       VIM File
                     </label>
                     <InputGroup
@@ -155,8 +155,8 @@ const FormDocs = () => {
                 </div>
                 <div className='form-row mb-2'>
                   <div className='col'>
-                    <label for='paid'>
-                      Paid (Pagadas) File
+                    <label htmlFor='paid'>
+                      Paid (Pagada) File
                     </label>
                     <InputGroup
                       type='file'

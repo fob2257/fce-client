@@ -38,7 +38,7 @@ const InputGroup = ({
       />
       {
         showDelete && (
-          <div class='input-group-append'>
+          <div className='input-group-append'>
             <span className='input-group-text'>
               <button type='button' className='btn btn-danger btn-sm' onClick={() => onClickDelete(inputRef)}>
                 <i className='fas fa-trash' />

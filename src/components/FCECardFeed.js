@@ -25,15 +25,13 @@ const FCECard = ({ data }) => {
         <p className='card-text'>
           <b>ptovta:</b> {data.ptovta} & <b>nrocmp:</b> {data.nrocmp}
         </p>
-        <ul className='list-group list-group-flush'>
-          <li className='list-group-item'>
-            {data.invoices.length} match(es) with Invoice
-          </li>
-          <li className='list-group-item'>
-            {data.vims.length} match(es) with VIM
-          </li>
-          <li className='list-group-item'>
-            {data.paids.length} match(es) with Paid (Pagada)
+        <ul className='list-unstyled'>
+          <li>Matches:
+            <ul>
+              <li>{data.invoices.length} Invoice Capturing</li>
+              <li>{data.vims.length} VIM</li>
+              <li>{data.paids.length} Paid (Pagada)</li>
+            </ul>
           </li>
         </ul>
       </div>
@@ -44,11 +42,11 @@ const FCECard = ({ data }) => {
               See details
             </Link>
           </div>
-          <div className='col'>
+          {/* <div className='col'>
             <button type='button' className='btn btn-danger btn-sm' onClick={() => onClickDelete()}>
               Delete
             </button>
-          </div>
+          </div> */}
         </div>
         <p className='card-text'>
           <small className='text-muted'>

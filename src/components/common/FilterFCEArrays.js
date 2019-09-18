@@ -27,29 +27,37 @@ const checkReference = (reference = '', ptovta = '', nrocmp = '') => {
 };
 
 export default (fceData = [], invoiceData = [], vimData = [], paidData = []) =>
-  fceData.map((fce) => {
-    const ptovta = fce['ptovta'];
-    const nrocmp = fce['nrocmp'];
+  new Promise((resolve, reject) => {
+    try {
+      const res = fceData.map((fce) => {
+        const ptovta = fce['ptovta'];
+        const nrocmp = fce['nrocmp'];
 
-    const invoices = filterReference([...invoiceData])
-      .filter(invoice =>
-        `${fce['cuitemisor']}`.toLowerCase() === `${invoice['cuit']}`.toLowerCase()
-        && checkReference(invoice.reference, ptovta, nrocmp));
-    const vims = filterReference([...vimData])
-      .filter(vim =>
-        `${fce['vendor']}`.toLowerCase() === `${vim['vendor']}`.toLowerCase()
-        && checkReference(vim.reference, ptovta, nrocmp));
-    const paids = filterReference([...paidData])
-      .filter(paid =>
-        `${fce['vendor']}`.toLowerCase() === `${paid['account']}`.toLowerCase()
-        && checkReference(paid.reference, ptovta, nrocmp));
+        const invoices = filterReference([...invoiceData])
+          .filter(invoice =>
+            `${fce['cuitemisor']}`.toLowerCase() === `${invoice['cuit']}`.toLowerCase()
+            && checkReference(invoice.reference, ptovta, nrocmp));
+        const vims = filterReference([...vimData])
+          .filter(vim =>
+            `${fce['vendor']}`.toLowerCase() === `${vim['vendor']}`.toLowerCase()
+            && checkReference(vim.reference, ptovta, nrocmp));
+        const paids = filterReference([...paidData])
+          .filter(paid =>
+            `${fce['vendor']}`.toLowerCase() === `${paid['account']}`.toLowerCase()
+            && checkReference(paid.reference, ptovta, nrocmp));
 
-    return ({
-      ...fce,
-      invoices,
-      vims,
-      paids,
-      createdAt: new Date(),
-      id: v4(),
-    });
+        return ({
+          ...fce,
+          invoices,
+          vims,
+          paids,
+          createdAt: new Date(),
+          id: v4(),
+        });
+      });
+
+      resolve(res);
+    } catch (error) {
+      reject(error);
+    }
   });
