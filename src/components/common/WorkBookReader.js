@@ -23,7 +23,14 @@ const parseXlsxData = (data, headerIndex, columnIndex) => {
   for (let index = 0; index < data.length; index += 1) {
     const row = data[index];
     if (index === headerIndex) {
-      keys = row.map(v => v.toLowerCase());
+      keys = row.map(v => v.toLowerCase()
+        // remove spaces
+        .trim()
+        // replace accented characters
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        // replace special characters
+        .replace(/\W+(?!$)/g, '-').replace(/\W$/, ''));
+      // .replace(/\s+/g, '-')
       continue;
     }
 
@@ -32,8 +39,8 @@ const parseXlsxData = (data, headerIndex, columnIndex) => {
       sheetData.push(row.reduce((acc, val, i) => ({
         ...acc,
         [keys[i]]: (val) ? val : '',
-        reference: (columnIndex !== null && i === columnIndex) ? val
-          : (acc.reference) ? acc.reference
+        customReference: (columnIndex !== null && i === columnIndex) ? val
+          : (acc.customReference) ? acc.customReference
             : undefined,
       }), {}));
     }
