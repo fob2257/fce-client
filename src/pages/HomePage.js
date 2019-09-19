@@ -13,9 +13,9 @@ const HomePage = () => {
               <h1 className='display-3 mb-4'>
                 Electronic Credit Invoice
               </h1>
-              <p className='lead'>
+              {/* <p className='lead'>
                 Find something...
-              </p>
+              </p> */}
               <hr />
               <Link to='/form' className='btn btn-lg btn-info mr-2'>
                 Submit Form

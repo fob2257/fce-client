@@ -62,7 +62,7 @@ export default [
     dataField: 'createdAt',
     text: 'Submitted At',
     sort: true,
-    formatter: (cell, row) => dateFormat(new Date(cell), 'MMM d, YYYY HH:mm:ss', { useAdditionalWeekYearTokens: true }),
+    formatter: (cell, row) => dateFormat(new Date(cell), 'd MMM YYYY, HH:mm:ss', { useAdditionalWeekYearTokens: true }),
     sortValue: (cell, row) => new Date(cell),
     sortFunc: (a, b, order, dataField) => (order === 'asc') ? a - b : b - a,
   },

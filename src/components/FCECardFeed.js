@@ -9,7 +9,6 @@ const FCECard = ({ data }) => {
   const { dispatch } = useContext(Context);
 
   const onClickDelete = () => {
-    dispatch({ type: constants.SET_CURRENT_FCE, payload: data });
     dispatch({ type: constants.REMOVE_FCE, payload: data });
   };
 
