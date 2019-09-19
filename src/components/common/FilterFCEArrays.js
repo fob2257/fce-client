@@ -1,18 +1,18 @@
 import { v4 } from 'uuid';
 
 const filterReference = (data = []) =>
-  data.filter(d => d.reference
-    && d.reference.length >= 13
-    && d.reference.length <= 14
-    && ['A', 'C'].some(letter => d.reference.startsWith(letter)));
+  data.filter(d => d.customReference
+    && d.customReference.length >= 13
+    && d.customReference.length <= 14
+    && ['A', 'C'].some(letter => d.customReference.startsWith(letter)));
 
-const checkReference = (reference = '', ptovta = '', nrocmp = '') => {
+const checkReference = (customReference = '', ptovta = '', nrocmp = '') => {
   try {
-    const refLength = reference.length;
+    const refLength = customReference.length;
     const sliceNum = refLength >= 14 ? 6 : 5;
 
-    const refFirstPart = Number.parseInt(reference.slice(sliceNum - `${ptovta}`.length).substring(0, `${ptovta}`.length));
-    const refSecondPart = Number.parseInt(reference.slice(sliceNum));
+    const refFirstPart = Number.parseInt(customReference.slice(sliceNum - `${ptovta}`.length).substring(0, `${ptovta}`.length));
+    const refSecondPart = Number.parseInt(customReference.slice(sliceNum));
 
     const result = ptovta
       && nrocmp
@@ -26,7 +26,16 @@ const checkReference = (reference = '', ptovta = '', nrocmp = '') => {
   }
 };
 
-export default (fceData = [], invoiceData = [], vimData = [], paidData = []) =>
+export default ({
+  fceFileName = '',
+  invoiceFileName = '',
+  vimFileName = '',
+  paidFileName = '',
+  fceData = [],
+  invoiceData = [],
+  vimData = [],
+  paidData = [],
+}) =>
   new Promise((resolve, reject) => {
     try {
       const res = fceData.map((fce) => {
@@ -36,18 +45,22 @@ export default (fceData = [], invoiceData = [], vimData = [], paidData = []) =>
         const invoices = filterReference([...invoiceData])
           .filter(invoice =>
             `${fce['cuitemisor']}`.toLowerCase() === `${invoice['cuit']}`.toLowerCase()
-            && checkReference(invoice.reference, ptovta, nrocmp));
+            && checkReference(invoice.customReference, ptovta, nrocmp));
         const vims = filterReference([...vimData])
           .filter(vim =>
             `${fce['vendor']}`.toLowerCase() === `${vim['vendor']}`.toLowerCase()
-            && checkReference(vim.reference, ptovta, nrocmp));
+            && checkReference(vim.customReference, ptovta, nrocmp));
         const paids = filterReference([...paidData])
           .filter(paid =>
             `${fce['vendor']}`.toLowerCase() === `${paid['account']}`.toLowerCase()
-            && checkReference(paid.reference, ptovta, nrocmp));
+            && checkReference(paid.customReference, ptovta, nrocmp));
 
         return ({
           ...fce,
+          fceFileName,
+          invoiceFileName,
+          vimFileName,
+          paidFileName,
           invoices,
           vims,
           paids,

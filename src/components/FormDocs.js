@@ -59,11 +59,21 @@ const FormDocs = () => {
         promiseOrEmptyArray(paidFile),
       ]);
 
-      const res = await filterFCEArrays(fceData, invoiceData, vimData, paidData);
+      const res = await filterFCEArrays({
+        fceFileName: (fceFile) ? fceFile.file.name : '',
+        invoiceFileName: (fceFile) ? invoiceFile.file.name : '',
+        vimFileName: (fceFile) ? vimFile.file.name : '',
+        paidFileName: (fceFile) ? paidFile.file.name : '',
+        fceData,
+        invoiceData,
+        vimData,
+        paidData,
+      });
 
       dispatch({ type: constants.ADD_FCE, payload: res });
-
+      setLoading(false);
       clearForm();
+      setLoading(true);
     } catch (error) {
       console.error(error);
     }
