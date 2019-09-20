@@ -2,6 +2,8 @@ import React, { useContext, useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { format as dateFormat } from 'date-fns';
 
+import './FCEDetail.style.css';
+
 import Context from '../Context';
 import constants from '../Constants';
 
@@ -61,11 +63,11 @@ const FCEDetail = ({ match, history }) => {
    *
    * invoices[].document-id-number
    * invoices[].vendor-name
+   * invoices[].cuit
    * invoices[].invoice-number || invoices[].customReference
    * invoices[].invoice-date
    * invoices[].invoice-total
    * invoices[].invoice-currency
-   * invoices[].invoice-cuit
    *
    * vims[].document-id
    * vims[].mm-invoice-document-no
@@ -103,17 +105,15 @@ const FCEDetail = ({ match, history }) => {
                     <br />
                     Nrocmp: {currentFce['nrocmp']}
                   </p>
-                  <hr className='my-4'></hr>
-                  <button type='button' className='btn btn-primary btn-lg' data-toggle='collapse' data-target='#collapseMoreInfo' aria-expanded='false' aria-controls='collapseMoreInfo'>
-                    Show more info
-                  </button>
                 </div>
               </div>
               {/* FCE info */}
-              <p className='mt-2'>
+              <p className='mt-2 clickable' data-toggle='collapse' data-target='#collapseFce' aria-expanded='false' aria-controls='collapseFce'>
                 <b>FCE File:</b> {currentFce.fceFileName}
+                {' '}
+                <span className='badge badge-primary'>Show more info</span>
               </p>
-              <div className='collapse' id='collapseMoreInfo'>
+              <div className='collapse' id='collapseFce'>
                 <div className='card card-body'>
                   <div className='row'>
                     <div className='col'>
@@ -157,110 +157,130 @@ const FCEDetail = ({ match, history }) => {
                 </div>
               </div>
               {/* Invoice info */}
-              <div className='row mt-2'>
-                <div className='col'>
-                  <p data-toggle='collapse' data-target='#collapseInvoice' aria-expanded='false' aria-controls='collapseInvoice'>
-                    <b>Invoice Capturing File:</b> {currentFce.invoiceFileName}
-                    {' '}
-                    <span className='badge badge-primary'>{currentFce.invoices.length} matches</span>
-                  </p>
-                </div>
-              </div>
-              <div className='collapse' id='collapseInvoice'>
-                <div className='row'>
-                  <div className='overflow-auto' style={{
-                    maxHeight: '350px',
-                    overflow: 'scroll',
-                  }}>
-                    <ul className='list-group'>
-                      {
-                        currentFce.invoices.map(obj => (
-                          <li className='list-group-item'>
-                            <div className='d-flex w-100 justify-content-between'>
-                              <h5 className='mb-1'>
-                                Document Id: {obj['document-id-number']}
-                              </h5>
-                              <small>
-                                {obj['invoice-date'] && dateToString(obj['invoice-date'])}
-                              </small>
-                            </div>
-                            <p className='mb-1'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                            <small>Donec id elit non mi porta.</small>
-                          </li>
-                        ))
-                      }
-                    </ul>
+              <p className={`mt-2 ${currentFce.invoices.length && 'clickable'}`} data-toggle='collapse' data-target='#collapseInvoice' aria-expanded='false' aria-controls='collapseInvoice'>
+                <b>Invoice Capturing File:</b> {currentFce.invoiceFileName}
+                {' '}
+                <span className='badge badge-primary'>
+                  {currentFce.invoices.length} matches
+                </span>
+              </p>
+              {
+                (currentFce.invoices.length) ? (
+                  <div className='collapse' id='collapseInvoice'>
+                    <div className='card card-body'>
+                      <div className='overflow-auto'>
+                        <ul className='list-group'>
+                          {
+                            currentFce.invoices.map(obj => (
+                              <li className='list-group-item'>
+                                <div className='row'>
+                                  <div className='col'>
+                                    <ul className='list-unstyled'>
+                                      <li><b>Document Id:</b> {obj['document-id-number']}</li>
+                                      <li><b>Vendor Name:</b> {obj['vendor-name']}</li>
+                                      <li><b>CUIT:</b> {obj['cuit']}</li>
+                                      <li><b>Invoice Number:</b> {obj['invoice-number']}</li>
+                                    </ul>
+                                  </div>
+                                  <div className='col'>
+                                    <ul className='list-unstyled'>
+                                      <li><b>Invoice Date:</b> {obj['invoice-date'] && dateToString(obj['invoice-date'])}</li>
+                                      <li><b>Invoice Total:</b> {obj['invoice-total']}</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </li>
+                            ))
+                          }
+                        </ul>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                ) : null
+              }
               {/* VIM info */}
-              <div className='row mt-2'>
-                <div className='col'>
-                  <p data-toggle='collapse' data-target='#collapseVim' aria-expanded='false' aria-controls='collapseVim'>
-                    <b>VIM File:</b> {currentFce.vimFileName}
-                    {' '}
-                    <span className='badge badge-primary'>{currentFce.vims.length} matches</span>
-                  </p>
-                </div>
-              </div>
-              <div className='collapse' id='collapseVim'>
-                <div className='row'>
-                  <div className='overflow-auto' style={{
-                    maxHeight: '350px',
-                    overflow: 'scroll',
-                  }}>
-                    <ul className='list-group'>
-                      {
-                        currentFce.vims.map(obj => (
-                          <li className='list-group-item'>
-                            <div className='d-flex w-100 justify-content-between'>
-                              <h5 className='mb-1'>
-                                Document Id: {obj['document-id']}
-                              </h5>
-                            </div>
-                            <p className='mb-1'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                            <small>Donec id elit non mi porta.</small>
-                          </li>
-                        ))
-                      }
-                    </ul>
+              <p className={`mt-2 ${currentFce.vims.length && 'clickable'}`} data-toggle='collapse' data-target='#collapseVim' aria-expanded='false' aria-controls='collapseVim'>
+                <b>VIM File:</b> {currentFce.vimFileName}
+                {' '}
+                <span className='badge badge-primary'>
+                  {currentFce.vims.length} matches
+                </span>
+              </p>
+              {
+                (currentFce.vims.length) ? (
+                  <div className='collapse' id='collapseVim'>
+                    <div className='card card-body'>
+                      <div className='overflow-auto'>
+                        <ul className='list-group'>
+                          {
+                            currentFce.vims.map(obj => (
+                              <li className='list-group-item'>
+                                <div className='row'>
+                                  <div className='col'>
+                                    <ul className='list-unstyled'>
+                                      <li><b>Document Id:</b> {obj['document-id']}</li>
+                                      <li><b>Vendor Name:</b> {obj['vendor-name']}</li>
+                                      <li><b>Vendor:</b> {obj['vendor']}</li>
+                                      <li><b>Reference:</b> {obj['reference']}</li>
+                                    </ul>
+                                  </div>
+                                  <div className='col'>
+                                    <ul className='list-unstyled'>
+                                      <li><b>VIM Process Status:</b> {obj['vim-process-status-text']}</li>
+                                      <li><b>Accounting Doc No:</b> {obj['accounting-document-no']}</li>
+                                      <li><b>MM Invoice Doc No:</b> {obj['mm-invoice-document-no']}</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </li>
+                            ))
+                          }
+                        </ul>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                ) : null
+              }
               {/* Paid info */}
-              <div className='row mt-2'>
-                <div className='col'>
-                  <p data-toggle='collapse' data-target='#collapsePaid' aria-expanded='false' aria-controls='collapsePaid'>
-                    <b>Paid (Pagada) File:</b> {currentFce.paidFileName}
-                    {' '}
-                    <span className='badge badge-primary'>{currentFce.paids.length} matches</span>
-                  </p>
-                </div>
-              </div>
-              <div className='collapse' id='collapsePaid'>
-                <div className='row'>
-                  <div className='overflow-auto' style={{
-                    maxHeight: '350px',
-                    overflow: 'scroll',
-                  }}>
-                    <ul className='list-group'>
-                      {
-                        currentFce.paids.map(obj => (
-                          <li className='list-group-item'>
-                            <div className='d-flex w-100 justify-content-between'>
-                              <h5 className='mb-1'>
-                                Document Id: {obj['document-number']}
-                              </h5>
-                            </div>
-                            <p className='mb-1'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                            <small>Donec id elit non mi porta.</small>
-                          </li>
-                        ))
-                      }
-                    </ul>
+              <p className={`mt-2 ${currentFce.paids.length && 'clickable'}`} data-toggle='collapse' data-target='#collapsePaid' aria-expanded='false' aria-controls='collapsePaid'>
+                <b>Paid (Pagada) File:</b> {currentFce.paidFileName}
+                {' '}
+                <span className='badge badge-primary'>{currentFce.paids.length} matches</span>
+              </p>
+              {
+                (currentFce.paids.length) ? (
+                  <div className='collapse' id='collapsePaid'>
+                    <div className='card card-body'>
+                      <div className='overflow-auto'>
+                        <ul className='list-group'>
+                          {
+                            currentFce.paids.map(obj => (
+                              <li className='list-group-item'>
+                                <div className='row'>
+                                  <div className='col'>
+                                    <ul className='list-unstyled'>
+                                      <li><b>Document Id:</b> {obj['document-number']}</li>
+                                      <li><b>Account:</b> {obj['account']}</li>
+                                      <li><b>Reference:</b> {obj['reference']}</li>
+                                    </ul>
+                                  </div>
+                                  <div className='col'>
+                                    <ul className='list-unstyled'>
+                                      <li><b>Document Date:</b> {obj['document-date'] && dateToString(obj['document-date'])}</li>
+                                      <li><b>Clearing Document:</b> {obj['clearing-document']}</li>
+                                      <li><b>Clearing Date:</b> {obj['clearing-date'] && dateToString(obj['clearing-date'])}</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </li>
+                            ))
+                          }
+                        </ul>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                ) : null
+              }
               <footer className='mt-2'>
                 Submitted At: {dateToString(currentFce.createdAt, 'd MMM YYYY, HH:mm:ss')}
               </footer>

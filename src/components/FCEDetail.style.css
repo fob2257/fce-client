@@ -1,0 +1,8 @@
+p.clickable {
+  cursor: pointer;
+}
+
+.card .overflow-auto {
+  max-height: 350px;
+  overflow: scroll;
+}
