@@ -66,9 +66,13 @@ const FCECardFeed = () => {
     <div className='fce-card-feed'>
       <div className='card-deck mb-4'>
         {
-          state.fces.slice(-4).reverse().map((fce, i) => (
-            <FCECard key={i} data={fce} />
-          ))
+          state.fces
+            .slice(-15)
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 4)
+            .map((fce, i) => (
+              <FCECard key={i} data={fce} />
+            ))
         }
       </div>
     </div>
