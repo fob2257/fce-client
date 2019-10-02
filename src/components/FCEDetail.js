@@ -4,13 +4,14 @@ import { format as dateFormat } from 'date-fns';
 
 import './FCEDetail.style.css';
 
-import Context from '../Context';
-import constants from '../Constants';
+import Context from '../context';
+import Actions from '../context/actions';
 
 import Spinner from './Spinner';
 
 const FCEDetail = ({ match, history }) => {
   const { state, dispatch } = useContext(Context);
+  const { setCurrentFce } = Actions(dispatch);
   const { currentFce } = state;
 
   const [loading, setLoading] = useState(true);
@@ -23,11 +24,11 @@ const FCEDetail = ({ match, history }) => {
       return history.push('/details');
     }
 
-    dispatch({ type: constants.SET_CURRENT_FCE, payload: fceFound });
+    setCurrentFce(fceFound);
     setLoading(false);
 
     return () => {
-      dispatch({ type: constants.SET_CURRENT_FCE, payload: null });
+      setCurrentFce(null);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -58,6 +59,7 @@ const FCEDetail = ({ match, history }) => {
    * ptovta
    * responsable
    * saldo
+   * dias-pendientes-para-accionar
    * status
    * vendor
    *
@@ -104,6 +106,8 @@ const FCEDetail = ({ match, history }) => {
                     Ptovta: {currentFce['ptovta']}
                     <br />
                     Nrocmp: {currentFce['nrocmp']}
+                    <br />
+                    Responsable: {currentFce['responsable']}
                   </p>
                 </div>
               </div>
@@ -132,7 +136,7 @@ const FCEDetail = ({ match, history }) => {
                     <div className='col'>
                       <ul className='list-unstyled'>
                         <li><b>Status:</b> {currentFce['status']}</li>
-                        <li><b>Responsable:</b> {currentFce['responsable']}</li>
+                        <li><b>Pending days for action:</b> {currentFce['dias-pendientes-para-accionar']}</li>
                       </ul>
                     </div>
                   </div>

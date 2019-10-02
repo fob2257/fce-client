@@ -6,7 +6,7 @@ import './index.style.css';
 
 import * as serviceWorker from './serviceWorker';
 
-import { ContextProvider } from './Context';
+import { ContextProvider } from './context';
 
 import Header from './components/Header';
 import Footer from './components/Footer';

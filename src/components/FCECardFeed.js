@@ -2,15 +2,14 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { formatDistance, subSeconds } from 'date-fns';
 
-import Context from '../Context';
-import constants from '../Constants';
+import Context from '../context';
+import Actions from '../context/actions';
 
 const FCECard = ({ data }) => {
   const { dispatch } = useContext(Context);
+  const { removeFce } = Actions(dispatch);
 
-  const onClickDelete = () => {
-    dispatch({ type: constants.REMOVE_FCE, payload: data });
-  };
+  const onClickDelete = () => removeFce(data);
 
   return (
     <div className='card'>

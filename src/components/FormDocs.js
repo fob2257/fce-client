@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 
-import Context from '../Context';
-import constants from '../Constants';
+import Context from '../context';
+import Actions from '../context/actions';
 
 import workBookReader, { docs } from './common/WorkBookReader';
 import filterFCEArrays from './common/FilterFCEArrays';
@@ -10,6 +10,7 @@ import Spinner from './Spinner';
 
 const FormDocs = () => {
   const { dispatch } = useContext(Context);
+  const { addFce } = Actions(dispatch);
 
   const [fceFile, setFceFile] = useState(null);
   const [invoiceFile, setInvoiceFile] = useState(null);
@@ -70,7 +71,7 @@ const FormDocs = () => {
         paidData,
       });
 
-      dispatch({ type: constants.ADD_FCE, payload: res });
+      addFce(res);
       setLoading(false);
       clearForm();
       setLoading(true);

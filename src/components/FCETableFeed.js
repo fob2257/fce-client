@@ -8,17 +8,16 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 
-import Context from '../Context';
-import constants from '../Constants';
+import Context from '../context';
+import Actions from '../context/actions';
 
 import columns from './common/FCETableColumns';
 
 const FCERowOptions = ({ data }) => {
   const { dispatch } = useContext(Context);
+  const { removeFce } = Actions(dispatch);
 
-  const onClickDelete = () => {
-    dispatch({ type: constants.REMOVE_FCE, payload: data });
-  };
+  const onClickDelete = () => removeFce(data);
 
   return (
     <div>
