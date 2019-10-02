@@ -31,6 +31,8 @@ const FCECard = ({ data }) => {
               <li>{data.paids.length} Paid (Pagada)</li>
             </ul>
           </li>
+          <li>Status: {data.status}</li>
+          <li>Pending days for action: {data['dias-pendientes-para-accionar']}</li>
         </ul>
       </div>
       <div className='card-footer'>
