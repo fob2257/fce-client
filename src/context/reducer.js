@@ -10,10 +10,7 @@ export default (state = initialState, { type, payload }) => {
     case constants.ADD_FCE: {
       return {
         ...state,
-        fces: [
-          // ...state.fces,
-          ...payload,
-        ],
+        fces: payload,
       };
     }
 
